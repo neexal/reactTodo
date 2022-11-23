@@ -28,11 +28,11 @@ const Login = () => {
       <form className='loginForm'>
       <h1>Login Form</h1>
       <label htmlFor="">Username:</label>
-      <input type="text" name="" id="" 
+      <input type="text" name="" id="" placeholder="Enter Username:"
         onChange={(e)=>setAuthData({...authData,text:e.target.value})}
       />
       <label htmlFor="">Password:</label>
-      <input type="password" name="" id="" 
+      <input type="password" name="" id="" placeholder="Enter Password:" 
         onChange={(e)=>setAuthData({...authData,password:e.target.value})}
       />
       <button className='btnLogin' onClick={(e)=>checkAuth(e)}>Login</button>

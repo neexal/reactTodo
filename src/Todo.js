@@ -3,62 +3,65 @@ import './App.css'
 
 
 function Todo() {
+    const [todo, setAddTodo] = React.useState('');
+    const [todos, setTodos] = React.useState([]);
+    
     const getTodo = (e) => {
         e.preventDefault();
-        let todoObj={
-            id: Math.random(),
-            todo: todo
+        if (todo === "") {
+            alert("enter some value")
         }
-        todos.unshift(todoObj);
-        setAddTodo('')
-        console.log(todos);
+        else {
+            let todoObj = {
+                id: Math.random(),
+                todo: todo,
+                date: Date.now(),
+
+            }
+            setTodos([todoObj, ...todos]);
+            todos.unshift(todoObj);
+            setAddTodo('')
+        }
     }
-    let todos= []
-    const [todo, setAddTodo] = React.useState('');
+
+    // const [todoText, setTodoText] = React.useState([todo]);
+    const editTodo=(id, todo)=>{
+        // todo = todo
+        // let todoText = todo;
+        console.log(todo)
+        console.log(id)
+    }
+
+    const deleteTodo=(id)=>{
+        console.log("this will be deleted"+id)
+    }
+
     return (
         <>
             <div className="container">
                 <div>
                     <form className="todoForm">
                         {/* <input type="text" placeholder='Add your ToDo here.' onChange={(e) => setAddTodo({ ...addTodo, text:e.target.value })} /> */}
-                        <input type="text" value={todo} placeholder='Add your ToDo here.' onChange={(e)=>{setAddTodo(e.target.value)}} />
+                        <input type="text" placeholder='Add your ToDo here.' onChange={(e) => { setAddTodo(e.target.value) }} />
                         <button className='addTodo' onClick={(e) => getTodo(e)}>Add ToDo</button>
                     </form>
                 </div>
-
                 <div className="todoItems">
-                    <div className="todoItem">
-                        <div className="todoText">
-                            <p>This is a todo. </p>
-                        </div>
-
-                        <div className="todoAction">
-                            <button className="btnEdit">Edit</button>
-                            <button className="btnDelete">Delete</button>
-                        </div>
-                    </div>
-
-                    <div className="todoItem">
-                        <div className="todoText">
-                            <p>This is todo1</p>
-                        </div>
-
-                        <div className="todoAction">
-                            <button className="btnEdit">Edit</button>
-                            <button className="btnDelete">Delete</button>
-                        </div>
-                    </div>
-
-                    <div className="todoItem">
-                        <div className="todoText">
-                            <p>This is todo1</p>
-                        </div>
-
-                        <div className="todoAction">
-                            <button className="btnEdit">Edit</button>
-                            <button className="btnDelete">Delete</button>
-                        </div>
-                    </div>
+                    {
+                        todos.map((res) => {
+                            return (
+                                <div key={res.id} className="todoItem">
+                                    <div className="todoText">
+                                        <p>{res.todo}</p>
+                                    </div>
+                                    <div className="todoAction">
+                                        <button className="btnEdit" onClick={(e) => editTodo(res.id, res.todo)}>Edit</button>
+                                        <button className="btnDelete" onClick={(e)=>deleteTodo(res.id)}>Delete</button>
+                                    </div>
+                                </div>
+                            )
+                        })
+                    }
                 </div>
             </div>
         </>
