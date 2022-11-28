@@ -5,7 +5,8 @@ import './App.css'
 function Todo() {
     const [todo, setAddTodo] = React.useState('');
     const [todos, setTodos] = React.useState([]);
-    
+    var add = true;
+
     const getTodo = (e) => {
         e.preventDefault();
         if (todo === "") {
@@ -17,6 +18,7 @@ function Todo() {
                 todo: todo,
                 date: Date.now(),
 
+
             }
             setTodos([todoObj, ...todos]);
             todos.unshift(todoObj);
@@ -24,16 +26,13 @@ function Todo() {
         }
     }
 
-    // const [todoText, setTodoText] = React.useState([todo]);
-    const editTodo=(id, todo)=>{
-        // todo = todo
-        // let todoText = todo;
-        console.log(todo)
-        console.log(id)
+    // const [editText, setEditText] = React.useState([]);
+    const editTodo=(e,i, todo)=>{
+        // console.log(todo)
     }
 
-    const deleteTodo=(id)=>{
-        console.log("this will be deleted"+id)
+    const deleteTodo=(e,id)=>{
+        delete todos[id];
     }
 
     return (
@@ -43,20 +42,21 @@ function Todo() {
                     <form className="todoForm">
                         {/* <input type="text" placeholder='Add your ToDo here.' onChange={(e) => setAddTodo({ ...addTodo, text:e.target.value })} /> */}
                         <input type="text" placeholder='Add your ToDo here.' onChange={(e) => { setAddTodo(e.target.value) }} />
-                        <button className='addTodo' onClick={(e) => getTodo(e)}>Add ToDo</button>
+                        <button className='addTodo' onClick={(e) =>add ? getTodo(e): editTodo(e)} >Add ToDo</button>
                     </form>
                 </div>
                 <div className="todoItems">
                     {
-                        todos.map((res) => {
+                        todos.map((res,id) => {
                             return (
                                 <div key={res.id} className="todoItem">
                                     <div className="todoText">
                                         <p>{res.todo}</p>
                                     </div>
                                     <div className="todoAction">
-                                        <button className="btnEdit" onClick={(e) => editTodo(res.id, res.todo)}>Edit</button>
-                                        <button className="btnDelete" onClick={(e)=>deleteTodo(res.id)}>Delete</button>
+                                        <button className="btnEdit" onClick={(e) => editTodo(e,id,res.todo)}>Edit</button>
+                                        {/* <button className="btnEdit" onClick={(e)=>setAddTodo(todos[index]['todo'])}>Edit</button> */}
+                                        <button className="btnDelete" onClick={(e)=>deleteTodo(e,id)}>Delete</button>
                                     </div>
                                 </div>
                             )
