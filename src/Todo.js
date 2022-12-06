@@ -41,6 +41,7 @@ function Todo() {
         setAddTodo(todoData);
         setIndex(id);
         console.log(todo);
+        console.log(id)
     }
 
     const updateTodo=(e)=>{
@@ -58,16 +59,13 @@ function Todo() {
 
     const deleteTodo=(e,id)=>{
         e.preventDefault();
-        setIndex(id)
-        let data = todos.map((res, id )=>{
-            if(id===index){
-                todos.splice(id, 1);
-            }
-            return res;
+        let data = todos.filter((res)=>{
+            return res.id !== id;
         })
-        setTodos(data)
-    }
+       console.log(data)
 
+       setTodos(data);
+    }
     return (
         <>
             <div className="container">
@@ -81,7 +79,7 @@ function Todo() {
                 </div>
                 <div className="todoItems">
                     {
-                        todos.map((res,id) => {
+                        todos.map((res,i) => {
                             return (
                                 <div key={res.id} className="todoItem">
                                     <div className="todoText">
@@ -91,11 +89,11 @@ function Todo() {
                                         <button className="btnEdit" 
                                         onClick={(e, todo) => {
                                             // editTodo(e,id,res.todo)
-                                            edit(e, res.todo, id)
+                                            edit(e, res.todo, i)
                                         }
                                         }>Edit</button>
                                         {/* <button className="btnEdit" onClick={(e)=>setAddTodo(todos[index]['todo'])}>Edit</button> */}
-                                        <button className="btnDelete" onClick={(e)=>deleteTodo(e,id)}>Delete</button>
+                                        <button className="btnDelete" onClick={(e)=>deleteTodo(e,res.id)}>Delete</button>
                                     </div>
                                 </div>
                             )
