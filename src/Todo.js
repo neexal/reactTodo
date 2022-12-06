@@ -1,3 +1,4 @@
+
 import React from 'react'
 import './App.css'
 
@@ -5,7 +6,8 @@ import './App.css'
 function Todo() {
     const [todo, setAddTodo] = React.useState('');
     const [todos, setTodos] = React.useState([]);
-    var add = true;
+    const [isAdd, setIsAdd] = React.useState(true);
+    const [index, setIndex] = React.useState(null);
 
     const getTodo = (e) => {
         e.preventDefault();
@@ -28,30 +30,42 @@ function Todo() {
 
     // const [editText, setEditText] = React.useState([]);
     // const editTodo=(e,i, todo)=>{
-    //     document.getElementById("hello").value = todo;
+    //     document.getElementById("hello").values = todo;
     //     add = false;
     //     console.log(i)
     // }
 
-    const updateTodo=(e, id,i)=>{
+    const edit= (e, todoData, id)=>{
         e.preventDefault();
-        console.log("updating")
-        if (todo === "") {
-            alert("Please Update the Value")
-        }
-        else {
-            let todoObj = {
-                todo: todo,
-                date: Date.now(),
+        setIsAdd(false);
+        setAddTodo(todoData);
+        setIndex(id);
+        console.log(todo);
+    }
+
+    const updateTodo=(e)=>{
+        e.preventDefault()
+        let data = todos.map((res, id)=>{
+            if(id === index){
+                todos[index].todo=todo;
             }
-            setTodos([todoObj, ...todos]);
-            todos.unshift(todoObj);
-            setAddTodo('')
-        }
+            return res;
+        })
+        setTodos(data);
+        setIsAdd(true);
+        setAddTodo('');
     }
 
     const deleteTodo=(e,id)=>{
-        delete todos[id];
+        e.preventDefault();
+        setIndex(id)
+        let data = todos.map((res, id )=>{
+            if(id===index){
+                todos.splice(id, 1);
+            }
+            return res;
+        })
+        setTodos(data)
     }
 
     return (
@@ -60,9 +74,9 @@ function Todo() {
                 <div>
                     <form className="todoForm">
                         {/* <input type="text" placeholder='Add your ToDo here.' onChange={(e) => setAddTodo({ ...addTodo, text:e.target.value })} /> */}
-                        <input id='hello' type="text" placeholder='Add your ToDo here.' onChange={(e) => { setAddTodo(e.target.value) }} 
+                        <input type="text" placeholder='Add your ToDo here.' onChange={(e) => { setAddTodo(e.target.value) }} 
                         value={todo} />
-                        <button className='addTodo' onClick={(e) =>add ? getTodo(e): updateTodo(e)} >Add ToDo</button>
+                        <button className='addTodo' onClick={(e) => isAdd ? getTodo(e): updateTodo(e)} >{isAdd ? 'Add ToDo' : 'Edit'}</button>
                     </form>
                 </div>
                 <div className="todoItems">
@@ -75,9 +89,9 @@ function Todo() {
                                     </div>
                                     <div className="todoAction">
                                         <button className="btnEdit" 
-                                        onClick={(e) => {
+                                        onClick={(e, todo) => {
                                             // editTodo(e,id,res.todo)
-                                            setAddTodo(res.todo)
+                                            edit(e, res.todo, id)
                                         }
                                         }>Edit</button>
                                         {/* <button className="btnEdit" onClick={(e)=>setAddTodo(todos[index]['todo'])}>Edit</button> */}
